@@ -11,8 +11,11 @@ import searchRoutes from './routes/SearchRoutes.js'
 const app = express()
 
 app.use(express.json())
+// app.use(cors({
+//   origin: "https://sqlrentals.netlify.app"
+// }))
 app.use(cors({
-  origin: "https://sqlrentals.netlify.app"
+  origin: "*"
 }))
 
 dotenv.config()
