@@ -119,8 +119,6 @@ export const getOrderById = async(req, res) => {
 
     const id = req.params.id
 
-    console.log("ORDER ID: ", id)
-
     try {
         
         const q = `SELECT * FROM orders
