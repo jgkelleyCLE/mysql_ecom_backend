@@ -7,7 +7,8 @@ export const getProducts = async(req, res) => {
         
         const q = "SELECT * FROM products"
 
-        db.query(q, (err, data) => {
+
+     db.query(q, (err, data) => {
             if(err){
                 console.log("ERROR: ", err)
                 return res.status(400).json(err)

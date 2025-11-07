@@ -12,7 +12,7 @@ dotenv.config()
 //     database: 'safariProducts'
 // })
 
-export const db = mysql.createConnection({
+export const db = mysql.createPool({
     host: process.env.MYSQLHOST,
     port: process.env.MYSQLPORT,
     user: process.env.MYSQLUSER,
