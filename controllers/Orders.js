@@ -171,6 +171,72 @@ export const getOrderItems = async(req, res) => {
 
 }
 
+//get orders with order items
+export const getOrdersComplete = async(req, res) => {
+
+
+    const {orderIds} = req.body;
+
+    console.log("ALL ORDER IDs: ", orderIds)
+
+    if(orderIds.length === 0){
+        return res.status(400).json({ message: "No orders found!" })
+    }
+
+    try {
+
+        // let q
+        
+        // orderIds.forEach(id => {
+            
+        //     q = `
+        //         SELECT *
+        //         FROM orders o
+        //         INNER JOIN order_items oi
+        //             ON oi.order_id = o.order_id
+        //             INNER JOIN products p
+        //                 ON p.product_id = oi.product_id
+        //         WHERE o.order_id = ?
+        //     `
+
+        //     db.query(q, [id], (err, data) => {
+        //         if(err){
+        //             console.log("ERROR: ", err)
+        //             return res.status(400).json(err)
+        //         }else {
+        //             res.status(200).json(data)
+        //         }
+        //     })
+
+        // });
+
+         const placeholders = orderIds.map(() => '?').join(',');
+        
+        const q = `
+            SELECT o.*, oi.order_item_id, oi.product_id, oi.quantity, oi.price as item_price, 
+                   p.product, p.image, p.price as product_price
+            FROM orders o
+            INNER JOIN order_items oi ON oi.order_id = o.order_id
+            INNER JOIN products p ON p.product_id = oi.product_id
+            WHERE o.order_id IN (${placeholders})
+            ORDER BY o.order_id, oi.order_item_id
+        `;
+
+        db.query(q, orderIds, (err, data) => {
+            if(err){
+                console.log("ERROR: ", err);
+                return res.status(400).json(err);
+            } else {
+                return res.status(200).json(data);
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+
+}
+
 export const updateOrderStatus = async(req, res) => {
 
     const id = req.params.id

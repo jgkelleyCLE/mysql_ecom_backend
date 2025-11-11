@@ -1,5 +1,5 @@
 import express from 'express'
-import { createOrder, getAllOrders, getOrderById, getOrderItems, getUserOrders, updateOrderStatus } from '../controllers/Orders.js'
+import { createOrder, getAllOrders, getOrderById, getOrderItems, getOrdersComplete, getUserOrders, updateOrderStatus } from '../controllers/Orders.js'
 
 const router = express.Router()
 
@@ -22,5 +22,7 @@ router.post('/', createOrder)
 
 //update order status
 router.put('/update/:id', updateOrderStatus)
+
+router.post('/all', getOrdersComplete)
 
 export default router

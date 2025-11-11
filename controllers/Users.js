@@ -23,7 +23,24 @@ export const registerUser = async(req, res) => {
                 console.log(err)
                 return res.status(400).json(err)
             }else {
-                return res.status(201).json(data)
+                // console.log("REGISTER DATA BACKEND: ", data)
+                // return res.status(201).json(data)
+                 const getUserQuery = "SELECT * FROM users WHERE user_id = ?"
+                    db.query(getUserQuery, [data.insertId], (err, userData) => {
+                        if(err){
+                            console.log(err)
+                            return res.status(400).json(err)
+                        }
+                        
+                        const user = userData[0]
+                        
+                        // Remove password from response
+                        const { password: userPassword, ...userWithoutPassword } = user;
+
+                        return res.status(201).json({
+                            user: userWithoutPassword
+                        })
+                    })
             }
 
         })
